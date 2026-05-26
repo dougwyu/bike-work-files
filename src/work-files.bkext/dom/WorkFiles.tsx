@@ -26,7 +26,10 @@ function WorkFilesPanel({ context }: { context: DOMExtensionContext<WorkFilesPro
     if (path) {
       context.postMessage({ type: 'add', path })
     } else {
-      console.warn('[work-files] File.path unavailable; cannot add file.')
+      const entered = window.prompt('Paste the full path to the .bike file:')
+      if (entered?.trim()) {
+        context.postMessage({ type: 'add', path: entered.trim() })
+      }
     }
     e.target.value = ''
   }
