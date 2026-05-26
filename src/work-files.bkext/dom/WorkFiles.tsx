@@ -25,6 +25,8 @@ function WorkFilesPanel({ context }: { context: DOMExtensionContext<WorkFilesPro
     const path = (file as unknown as { path?: string }).path
     if (path) {
       context.postMessage({ type: 'add', path })
+    } else {
+      console.warn('[work-files] File.path unavailable; cannot add file.')
     }
     e.target.value = ''
   }

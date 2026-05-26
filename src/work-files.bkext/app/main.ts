@@ -14,6 +14,11 @@ export async function activate(context: AppExtensionContext) {
     })
 
     handles.push(handle)
+    const originalDispose = handle.dispose.bind(handle)
+    handle.dispose = () => {
+      handles.splice(handles.indexOf(handle), 1)
+      originalDispose()
+    }
 
     const paths = bike.defaults.get(DEFAULTS_KEY) as string[]
     handle.postMessage({ type: 'init', paths })
