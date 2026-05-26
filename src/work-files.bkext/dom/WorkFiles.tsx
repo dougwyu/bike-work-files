@@ -5,7 +5,9 @@ import { WorkFilesProtocol } from './protocols'
 
 function WorkFilesPanel({ context }: { context: DOMExtensionContext<WorkFilesProtocol> }) {
   const [paths, setPaths] = useState<string[]>([])
-  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [adding, setAdding] = useState(false)
+  const [inputValue, setInputValue] = useState('')
+  const inputRef = useRef<HTMLInputElement>(null)
   const dragIndex = useRef<number | null>(null)
 
   useEffect(() => {
@@ -19,24 +21,29 @@ function WorkFilesPanel({ context }: { context: DOMExtensionContext<WorkFilesPro
     }
   }, [])
 
-  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0]
-    if (!file) return
-    const path = (file as unknown as { path?: string }).path
+  useEffect(() => {
+    if (adding) {
+      inputRef.current?.focus()
+    }
+  }, [adding])
+
+  function submitPath() {
+    const path = inputValue.trim()
     if (path) {
       context.postMessage({ type: 'add', path })
-    } else {
-      const entered = window.prompt('Paste the full path to the .bike file:')
-      if (entered?.trim()) {
-        context.postMessage({ type: 'add', path: entered.trim() })
-      }
     }
-    e.target.value = ''
+    setInputValue('')
+    setAdding(false)
+  }
+
+  function handleKeyDown(e: React.KeyboardEvent) {
+    if (e.key === 'Enter') submitPath()
+    if (e.key === 'Escape') { setInputValue(''); setAdding(false) }
   }
 
   return (
     <div style={{ padding: '4px 0' }}>
-      {paths.length === 0 && (
+      {paths.length === 0 && !adding && (
         <div
           style={{
             color: 'var(--secondary-label)',
@@ -114,29 +121,75 @@ function WorkFilesPanel({ context }: { context: DOMExtensionContext<WorkFilesPro
           )
         })}
       </ul>
-      <div style={{ display: 'flex', justifyContent: 'center', padding: '4px 0' }}>
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept=".bike"
-          style={{ display: 'none' }}
-          onChange={handleFileChange}
-        />
-        <button
-          onClick={() => fileInputRef.current?.click()}
-          style={{
-            background: 'none',
-            border: 'none',
-            color: 'var(--control-accent)',
-            cursor: 'pointer',
-            fontSize: '20px',
-            lineHeight: 1,
-            padding: '2px 8px',
-          }}
-        >
-          +
-        </button>
-      </div>
+
+      {adding ? (
+        <div style={{ display: 'flex', alignItems: 'center', padding: '4px 8px', gap: '4px' }}>
+          <input
+            ref={inputRef}
+            type="text"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="/path/to/file.bike"
+            style={{
+              flex: 1,
+              fontSize: '12px',
+              padding: '2px 4px',
+              border: '1px solid var(--separator)',
+              borderRadius: '3px',
+              background: 'var(--text-background)',
+              color: 'var(--label)',
+              outline: 'none',
+              minWidth: 0,
+            }}
+          />
+          <button
+            onClick={submitPath}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: 'var(--control-accent)',
+              cursor: 'pointer',
+              fontSize: '13px',
+              padding: '0 2px',
+              flexShrink: 0,
+            }}
+          >
+            Add
+          </button>
+          <button
+            onClick={() => { setInputValue(''); setAdding(false) }}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: 'var(--secondary-label)',
+              cursor: 'pointer',
+              fontSize: '13px',
+              padding: '0 2px',
+              flexShrink: 0,
+            }}
+          >
+            ×
+          </button>
+        </div>
+      ) : (
+        <div style={{ display: 'flex', justifyContent: 'center', padding: '4px 0' }}>
+          <button
+            onClick={() => setAdding(true)}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: 'var(--control-accent)',
+              cursor: 'pointer',
+              fontSize: '20px',
+              lineHeight: 1,
+              padding: '2px 8px',
+            }}
+          >
+            +
+          </button>
+        </div>
+      )}
     </div>
   )
 }
