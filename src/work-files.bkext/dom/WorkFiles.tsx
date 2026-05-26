@@ -16,6 +16,7 @@ function WorkFilesPanel({ context }: { context: DOMExtensionContext<WorkFilesPro
         setPaths(message.paths)
       }
     }
+    context.postMessage({ type: 'ready' })
     return () => {
       context.onmessage = undefined
     }

@@ -20,13 +20,14 @@ export async function activate(context: AppExtensionContext) {
       originalDispose()
     }
 
-    const paths = bike.defaults.get(DEFAULTS_KEY) as string[]
-    handle.postMessage({ type: 'init', paths })
-
     handle.onmessage = (message) => {
       const current = bike.defaults.get(DEFAULTS_KEY) as string[]
 
       switch (message.type) {
+        case 'ready': {
+          handle.postMessage({ type: 'init', paths: current })
+          break
+        }
         case 'add': {
           const updated = [...current, message.path]
           bike.defaults.set(DEFAULTS_KEY, updated)

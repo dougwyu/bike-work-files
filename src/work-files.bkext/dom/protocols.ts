@@ -7,6 +7,7 @@ export interface WorkFilesProtocol extends DOMProtocol {
     | { type: 'init'; paths: string[] }
     | { type: 'update'; paths: string[] }
   toApp:
+    | { type: 'ready' }
     | { type: 'add'; path: string }
     | { type: 'remove'; index: number }
     | { type: 'reorder'; fromIndex: number; toIndex: number }
