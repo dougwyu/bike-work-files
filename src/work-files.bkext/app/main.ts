@@ -46,7 +46,12 @@ export async function activate(context: AppExtensionContext) {
           break
         }
         case 'open': {
-          new URL(`file://${message.path}`).open({})
+          const existing = bike.documents.find(d => d.fileURL?.path === message.path)
+          if (existing) {
+            existing.activate()
+          } else {
+            new URL(`file://${message.path}`).open({})
+          }
           break
         }
       }
