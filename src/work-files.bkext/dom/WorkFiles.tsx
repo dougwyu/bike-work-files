@@ -48,10 +48,11 @@ function WorkFilesPanel({ context }: { context: DOMExtensionContext<WorkFilesPro
           const name = p.split('/').pop() || p
           return (
             <li
-              key={p}
+              key={`${p}-${index}`}
               draggable
               onDragStart={() => { dragIndex.current = index }}
               onDragOver={(e) => e.preventDefault()}
+              onDragEnd={() => { dragIndex.current = null }}
               onDrop={() => {
                 if (dragIndex.current !== null && dragIndex.current !== index) {
                   context.postMessage({ type: 'reorder', fromIndex: dragIndex.current, toIndex: index })
