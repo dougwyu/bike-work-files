@@ -18,6 +18,7 @@ To find the full path of a `.bike` file to add:
 - **Finder:** right-click the file, hold Option, then choose **Copy "[name]" as Pathname**
 	- You might have to remove the single quotes from around the copied pathname
 - **Finder path bar:** View → Show Path Bar, then right-click any segment → **Copy as Pathname**
+	- You might have to remove the single quotes from around the copied pathname
 - **Terminal:** drag the file into a Terminal window -- it pastes the full path automatically
 
 ## Install
