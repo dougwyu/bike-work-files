@@ -11,6 +11,14 @@ A persistent "Work Files" panel in Bike's inspector sidebar. Keep a curated list
 - List persists across Bike restarts
 - Adapts to light and dark mode
 
+## Getting a file's path
+
+To find the full path of a `.bike` file to add:
+
+- **Finder:** right-click the file, hold Option, then choose **Copy "[name]" as Pathname**
+- **Finder path bar:** View → Show Path Bar, then right-click any segment → **Copy as Pathname**
+- **Terminal:** drag the file into a Terminal window -- it pastes the full path automatically
+
 ## Install
 
 Copy the built extension into Bike's extensions directory:
