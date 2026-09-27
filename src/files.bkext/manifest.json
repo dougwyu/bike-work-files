@@ -1,5 +1,6 @@
 {
   "$schema": "../../node_modules/@bike-outliner/extension-kit/schemas/manifest.schema.json",
+  "description": "A persistent Work Files panel in the inspector for opening a curated list of .bike files with one click.",
   "version": "0.1.0",
   "api_version": "0.0.0",
   "permissions": ["openURL"],
