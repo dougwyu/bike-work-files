@@ -23,13 +23,15 @@ To find the full path of a `.bike` file to add:
 
 ## Install
 
-1. Build it with `npm install && npm run build` (see Development).
+1. Download `files.bkext.zip` from the [latest release](https://github.com/dougwyu/bike-work-files/releases/latest) and unzip it.
 2. Quit Bike.
 3. In Finder, press ⌘⇧G and go to `~/Library/Containers/com.hogbaysoftware.Bike/Data/Library/Application Support/Bike/Extensions/`.
-4. Copy `out/extensions/files.bkext` into that folder, replacing any older copy.
+4. Move `files.bkext` into that folder, replacing any older copy.
 5. Reopen Bike. The **Work Files** panel appears in the inspector (⌘⌥I).
 
-Use Finder rather than `cp` in a shell: macOS protects Bike's container, and a shell without Full Disk Access gets `Operation not permitted`. Alternatively, `npm test` builds and installs in one step (see below).
+Use Finder rather than `cp` in a shell: macOS protects Bike's container, and a shell without Full Disk Access gets `Operation not permitted`.
+
+To install your own build instead, run `npm test` (see below), which builds and installs it in one step.
 
 ## Development
 
