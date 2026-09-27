@@ -23,14 +23,13 @@ To find the full path of a `.bike` file to add:
 
 ## Install
 
-Copy the built extension into Bike's extensions directory:
+1. Build it with `npm install && npm run build` (see Development).
+2. Quit Bike.
+3. In Finder, press ⌘⇧G and go to `~/Library/Containers/com.hogbaysoftware.Bike/Data/Library/Application Support/Bike/Extensions/`.
+4. Copy `out/extensions/files.bkext` into that folder, replacing any older copy.
+5. Reopen Bike. The **Work Files** panel appears in the inspector (⌘⌥I).
 
-```bash
-cp -r out/extensions/work-files.bkext/ \
-  ~/Library/Containers/com.hogbaysoftware.Bike/Data/Library/Application\ Support/Bike/Extensions/work-files.bkext/
-```
-
-Then reload extensions in Bike (or restart it). The **Work Files** panel appears in the inspector (⌘⌥I).
+Use Finder rather than `cp` in a shell: macOS protects Bike's container, and a shell without Full Disk Access gets `Operation not permitted`. Alternatively, `npm test` builds and installs in one step (see below).
 
 ## Development
 
@@ -45,18 +44,12 @@ npm test        # run tests (Bike must be closed)
 
 The build system is [`bike-ext`](https://github.com/bike-outliner/extension-kit).
 
-### Known issue: missing globals.d.ts
-
-The extension-kit package (installed from GitHub) references `api/core/globals.d.ts` which is absent. After `npm install`, recreate the stub:
-
-```bash
-touch node_modules/@bike-outliner/extension-kit/api/core/globals.d.ts
-```
+`npm test` installs the build into Bike's sandboxed container (`~/Library/Containers/com.hogbaysoftware.Bike/...`), which macOS protects. Run it from Terminal with Full Disk Access granted (System Settings > Privacy & Security > Full Disk Access). From any other shell the install fails with `EPERM` and the tests silently run against whatever copy is already installed.
 
 ## Project structure
 
 ```
-src/work-files.bkext/
+src/files.bkext/
 ├── manifest.json       permissions: ["openURL"]
 ├── app/
 │   ├── main.ts         app context — state, message handling
